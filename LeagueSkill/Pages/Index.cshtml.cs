@@ -16,6 +16,10 @@ namespace LeagueSkill.Pages
     {
         [BindProperty(SupportsGet = true)]
         public ProfileQuery Profile { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Region { get; set; }
+
         public bool ValidSearch { get; private set; } //true si es valido el parametro de busqueda
         public bool DataLoaded { get; private set; } //true si encontro el invocador
 
@@ -23,8 +27,6 @@ namespace LeagueSkill.Pages
         public Summoner SummonerInfo { get; set; }
         public List<LeagueEntry> Leagues { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string Region { get; set; }
         public List<SelectListItem> RegionsList { get; } = new List<SelectListItem>
         {
             new SelectListItem{Value = "BR1", Text = "Brazil"},
@@ -46,17 +48,13 @@ namespace LeagueSkill.Pages
         {
             _logger = logger;
         }
+        //Ejecutado apenas cargo la pagina
+        //Si viene con informacion, busca ese perfil, si no es que entro por primera vez
         public void OnGet()
-        {
-            ValidSearch = false;
-            DataLoaded = false;
-        }
-        public IActionResult OnPost()
         {
             if (!string.IsNullOrWhiteSpace(Profile.Username))
             {
                 ValidSearch = true;
-                //buscar perfil
                 var api = new RiotClient(new RiotClientSettings
                 {
                     ApiKey = "RGAPI-7647d118-e233-4cf3-b3db-4ab38cefa973"
@@ -66,6 +64,21 @@ namespace LeagueSkill.Pages
                 Leagues = Utils.GetLeagues(api, SummonerInfo,
                     ParseRegion()).Result;
                 DataLoaded = SummonerInfo != null;
+            }
+            else
+            {
+                ValidSearch = false;
+                DataLoaded = false;
+            }
+        }
+        //Ejecutado apenas doy a submit, basicamente recarga la pagina con informacion para ser procesada en OnGet.
+        public IActionResult OnPost()
+        {
+            if (!string.IsNullOrWhiteSpace(Profile.Username))
+            {
+                ValidSearch = true;
+
+                return RedirectToPage("/Index", new { Profile.Username, Region });
             }
             return Page();
         }

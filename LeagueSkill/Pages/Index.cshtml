@@ -10,9 +10,7 @@
 
     <form method="post">
         <input type="text" class="form-control" asp-for="Profile.Username" placeholder="Username" />
-        <select class="form-control">
-            <option>LAS</option>
-        </select>
+        <select class="form-control" asp-for="Region" asp-items="Model.RegionsList"></select>
         <button type="submit" class="form-control">Submit</button>
     </form>
     <br />
@@ -24,7 +22,7 @@
             <h3 class="display-4">@Model.SummonerInfo.Name ranked stats:</h3>
             @foreach (RiotNet.Models.LeagueEntry entry in Model.Leagues)
             {
-                <h5>@Utils.GetLeagueData(entry)</h5>
+                <h5>@Utils.PrintLeagueData(entry)</h5>
             }
         }
         else

@@ -26,7 +26,7 @@ namespace LeagueSkill
         }
         public static string PrintLeagueData(LeagueEntry entry)
         {
-            return PrettyQueue(entry.QueueType) + ": "  + PrettyTier(entry.Tier) + " " + entry.Rank + " " + entry.LeaguePoints + "LP " + ((float)entry.Wins/entry.Losses * 50f).ToString("0.00") + " % WR ";
+            return PrettyQueue(entry.QueueType) + ": "  + PrettyTier(entry.Tier) + " " + entry.Rank + ", " + entry.LeaguePoints + "LP, " + ((float)entry.Wins/entry.Losses * 50f).ToString("0.00") + " % WR ";
         }
         public static string PrettyQueue(string queue)
         {

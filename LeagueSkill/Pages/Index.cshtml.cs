@@ -14,18 +14,18 @@ namespace LeagueSkill.Pages
 {
     public class IndexModel : PageModel
     {
+        //Model de input
         [BindProperty(SupportsGet = true)]
-        public ProfileQuery Profile { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string Region { get; set; }
+        public ProfileQuery ProfileQuery { get; set; }        
 
         public bool ValidSearch { get; private set; } //true si es valido el parametro de busqueda
         public bool DataLoaded { get; private set; } //true si encontro el invocador
 
-        //Model
+        //Model de output
         public Summoner SummonerInfo { get; set; }
         public List<LeagueEntry> Leagues { get; set; }
+        public List<LeagueParsedData> LeaguesParsedData { get; set; }
+        
 
         public List<SelectListItem> RegionsList { get; } = new List<SelectListItem>
         {
@@ -52,17 +52,25 @@ namespace LeagueSkill.Pages
         //Si viene con informacion, busca ese perfil, si no es que entro por primera vez
         public void OnGet()
         {
-            if (!string.IsNullOrWhiteSpace(Profile.Username))
+            if (!string.IsNullOrWhiteSpace(ProfileQuery.Username))
             {
                 ValidSearch = true;
+
+                //Cargo el output model.
                 var api = new RiotClient(new RiotClientSettings
                 {
-                    ApiKey = "RGAPI-7647d118-e233-4cf3-b3db-4ab38cefa973"
+                    ApiKey = "RGAPI-22edc51d-5a44-4be4-b5c7-c893f7448580"
                 });
-                SummonerInfo = Utils.GetSummonerData(api, Profile.Username,
+                SummonerInfo = Utils.GetSummonerData(api, ProfileQuery.Username,
                     ParseRegion()).Result;
                 Leagues = Utils.GetLeagues(api, SummonerInfo,
                     ParseRegion()).Result;
+                LeaguesParsedData = new List<LeagueParsedData>();
+                foreach(LeagueEntry league in Leagues)
+                {
+                    LeaguesParsedData.Add(Utils.ParseLeague(league));
+                }
+
                 DataLoaded = SummonerInfo != null;
             }
             else
@@ -71,20 +79,20 @@ namespace LeagueSkill.Pages
                 DataLoaded = false;
             }
         }
-        //Ejecutado apenas doy a submit, basicamente recarga la pagina con informacion para ser procesada en OnGet.
+        //Ejecutado apenas doy a submit, basicamente valida y recarga la pagina con informacion para ser procesada en OnGet.
         public IActionResult OnPost()
         {
-            if (!string.IsNullOrWhiteSpace(Profile.Username))
+            if (!string.IsNullOrWhiteSpace(ProfileQuery.Username))
             {
                 ValidSearch = true;
 
-                return RedirectToPage("/Index", new { Profile.Username, Region });
+                return RedirectToPage("/Index", new { ProfileQuery.Username, ProfileQuery.Region });
             }
             return Page();
         }
         private Utils.Server ParseRegion()
         {
-            return (Utils.Server)Enum.Parse(typeof(Utils.Server), Region);
+            return (Utils.Server)Enum.Parse(typeof(Utils.Server), ProfileQuery.Region);
         }
     }
 }

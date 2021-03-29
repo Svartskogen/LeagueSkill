@@ -1,4 +1,5 @@
-﻿using RiotNet;
+﻿using LeagueSkill.Models;
+using RiotNet;
 using RiotNet.Models;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,40 @@ namespace LeagueSkill
         }
         public static string PrintLeagueData(LeagueEntry entry)
         {
-            return PrettyQueue(entry.QueueType) + ": "  + PrettyTier(entry.Tier) + " " + entry.Rank + ", " + entry.LeaguePoints + "LP, " + ((float)entry.Wins/entry.Losses * 50f).ToString("0.00") + " % WR ";
+            return PrettyQueue(entry.QueueType) + ": "  + PrettyTier(entry.Tier) + " " + entry.Rank + ", " + entry.LeaguePoints + "LP \n" + ((float)entry.Wins/entry.Losses * 50f).ToString("0.00") + " % WR ";
+        }
+        public static LeagueParsedData ParseLeague(LeagueEntry entry)
+        {
+            var data = new LeagueParsedData();
+            data.FirstLine = PrettyQueue(entry.QueueType) + ": " + PrettyTier(entry.Tier) + " " + entry.Rank;
+            data.SecondLine = entry.LeaguePoints + "LP \n" + ((float)entry.Wins / entry.Losses * 50f).ToString("0.00") + " % WR (" + entry.Wins +"W/"+ entry.Losses + "L)";
+            data.ImagePath = GetLeaguePath(entry.Tier);
+            return data;
+        }
+        public static string GetLeaguePath(string tier)
+        {
+            switch (tier)
+            {
+                case "CHALLENGER":
+                    return "/img/Emblem_Challenger.png";
+                case "GRANDMASTER":
+                    return "/img/Emblem_Grandmaster.png";
+                case "MASTER":
+                    return "/img/Emblem_Master.png";
+                case "DIAMOND":
+                    return "/img/Emblem_Diamond.png";
+                case "PLATINUM":
+                    return "/img/Emblem_Platinum.png";
+                case "GOLD":
+                    return "/img/Emblem_Gold.png";
+                case "SILVER":
+                    return "/img/Emblem_Silver.png";
+                case "BRONZE":
+                    return "/img/Emblem_Bronze.png";
+                case "IRON":
+                    return "/img/Emblem_Iron.png";
+            }
+            return "";
         }
         public static string PrettyQueue(string queue)
         {

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace LeagueSkill.Models
 {
-    public class ProfileQuery
+    public class LeagueParsedData
     {
-        public string Username { get; set; }
-        public string Region { get; set; }
+        public string FirstLine;
+        public string SecondLine;
+        public string ImagePath;
     }
 }

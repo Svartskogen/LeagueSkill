@@ -33,9 +33,28 @@ namespace LeagueSkill
         {
             var data = new LeagueParsedData();
             data.FirstLine = PrettyQueue(entry.QueueType) + ": " + PrettyTier(entry.Tier) + " " + entry.Rank;
-            data.SecondLine = entry.LeaguePoints + "LP \n" + ((float)entry.Wins / entry.Losses * 50f).ToString("0.00") + " % WR (" + entry.Wins +"W/"+ entry.Losses + "L)";
+            data.LP = entry.LeaguePoints + "LP ";
+            var wr = (float)entry.Wins / entry.Losses * 50f;
+            data.WinRatio = (wr).ToString("0.00") + "% WR";
+            data.WinRatioColor = GetWinRatioColor(wr);
+            data.WinLoss = "(" + entry.Wins + "W/" + entry.Losses + "L)";
             data.ImagePath = GetLeaguePath(entry.Tier);
             return data;
+        }
+        public static string GetWinRatioColor(float ratio)
+        {
+            if (ratio <= 46)
+            {
+                return "text-danger";
+            }
+            else if(ratio <= 54)
+            {
+                return "text-primary";
+            }
+            else
+            {
+                return "text-sucess";
+            }
         }
         public static string GetLeaguePath(string tier)
         {

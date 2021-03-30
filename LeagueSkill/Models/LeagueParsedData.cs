@@ -8,7 +8,10 @@ namespace LeagueSkill.Models
     public class LeagueParsedData
     {
         public string FirstLine;
-        public string SecondLine;
+        public string LP;
+        public string WinRatio;
+        public string WinRatioColor;
+        public string WinLoss;
         public string ImagePath;
     }
 }

@@ -64,13 +64,15 @@ namespace LeagueSkill.Pages
                 SummonerInfo = Utils.GetSummonerData(api, ProfileQuery.Username,
                     ParseRegion()).Result;
                 Leagues = Utils.GetLeagues(api, SummonerInfo,
-                    ParseRegion()).Result;
+                    ParseRegion()).Result; //si no se encontro invocador esto devuelve null, por eso el nullcheck de abajo
                 LeaguesParsedData = new List<LeagueParsedData>();
-                foreach(LeagueEntry league in Leagues)
+                if(Leagues != null) 
                 {
-                    LeaguesParsedData.Add(Utils.ParseLeague(league));
+                    foreach (LeagueEntry league in Leagues)
+                    {
+                        LeaguesParsedData.Add(Utils.ParseLeague(league));
+                    }
                 }
-
                 DataLoaded = SummonerInfo != null;
             }
             else

@@ -1,0 +1,9 @@
+﻿Filename: ApiKeys.cs
+
+namespace LeagueSkill
+{
+    public static class ApiKeys
+    {
+        public const string RIOT_KEY = "";
+    }
+}

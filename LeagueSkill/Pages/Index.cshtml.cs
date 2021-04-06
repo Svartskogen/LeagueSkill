@@ -59,7 +59,7 @@ namespace LeagueSkill.Pages
                 //Cargo el output model.
                 var api = new RiotClient(new RiotClientSettings
                 {
-                    ApiKey = "RGAPI-22edc51d-5a44-4be4-b5c7-c893f7448580"
+                    ApiKey = ApiKeys.RIOT_KEY
                 });
                 SummonerInfo = Utils.GetSummonerData(api, ProfileQuery.Username,
                     ParseRegion()).Result;

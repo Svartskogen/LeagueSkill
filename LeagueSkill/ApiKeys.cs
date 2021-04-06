@@ -7,6 +7,6 @@ namespace LeagueSkill
 {
     public static class ApiKeys
     {
-        public const string RIOT_KEY = "";
+        public const string RIOT_KEY = "test";
     }
 }

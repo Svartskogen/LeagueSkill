@@ -3,7 +3,7 @@ Simple web page that fetchs a player's profile ranked data from the Riot Games A
 
 Made using ASP.NET Core, HTML, CSS, Bootstrap, Razor Pages and C#.
 
-Must use an Riot games API key to run locally.
+You must have an Riot games API key to run locally.
 
 ## Live demo:
 WIP.

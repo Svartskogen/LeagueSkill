@@ -53,7 +53,7 @@ namespace LeagueSkill
             }
             else
             {
-                return "text-sucess";
+                return "text-success";
             }
         }
         public static string GetLeaguePath(string tier)
